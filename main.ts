@@ -5,7 +5,6 @@ import { FRONTEND_URL } from "./util/Enviroment.ts";
 import { MONGODB_URI } from "./util/Enviroment.ts";
 import logger from './middleware/logger.ts';
 import { SERVER_PORT } from "./util/Enviroment.ts";
-import testRouter from "./controller/test.ts";
 import authRouter from "./controller/authController.ts";
 
 const app = new Application();
@@ -31,7 +30,6 @@ app.use(router.routes());
 app.use(logger);
 
 // Routes
-app.use(testRouter.routes());
 app.use(authRouter.routes());
 
 console.log(`Server running on http://localhost:${SERVER_PORT}`);
