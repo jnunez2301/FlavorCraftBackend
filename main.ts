@@ -6,6 +6,7 @@ import { MONGODB_URI } from "./util/Enviroment.ts";
 import logger from './middleware/logger.ts';
 import { SERVER_PORT } from "./util/Enviroment.ts";
 import authRouter from "./controller/authController.ts";
+import recipeRouter from "./controller/recipeController.ts";
 
 const app = new Application();
 const router = new Router();
@@ -31,6 +32,7 @@ app.use(logger);
 
 // Routes
 app.use(authRouter.routes());
+app.use(recipeRouter.routes());
 
 console.log(`Server running on http://localhost:${SERVER_PORT}`);
 await app.listen({ port: SERVER_PORT });

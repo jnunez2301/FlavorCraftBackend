@@ -1,3 +1,4 @@
+import { Recipe } from "./Recipe.ts";
 import { User } from "./User.ts";
 
 export enum ResponseTypes {
@@ -16,7 +17,7 @@ export enum ResponseTypes {
   USER_LOGGED_OUT = "You have successfully logged out",
 }
 type ApiResponse = {
-  message: ResponseTypes | string,
+  message: ResponseTypes | string | Recipe[],
   success: boolean
   session?: User
 }

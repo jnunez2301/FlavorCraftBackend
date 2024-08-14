@@ -2,6 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@lucsoft/web-bson@^0.3.1": "jsr:@lucsoft/web-bson@0.3.1",
       "jsr:@oak/commons@0.11": "jsr:@oak/commons@0.11.0",
       "jsr:@std/assert@0.223": "jsr:@std/assert@0.223.0",
       "jsr:@std/assert@0.226": "jsr:@std/assert@0.226.0",
@@ -12,7 +13,9 @@
       "jsr:@std/bytes@^0.223.0": "jsr:@std/bytes@0.223.0",
       "jsr:@std/crypto@0.223": "jsr:@std/crypto@0.223.0",
       "jsr:@std/crypto@0.224": "jsr:@std/crypto@0.224.0",
+      "jsr:@std/crypto@^0.220.1": "jsr:@std/crypto@0.220.1",
       "jsr:@std/encoding@1.0.0-rc.2": "jsr:@std/encoding@1.0.0-rc.2",
+      "jsr:@std/encoding@^0.220.1": "jsr:@std/encoding@0.220.1",
       "jsr:@std/encoding@^0.223.0": "jsr:@std/encoding@0.223.0",
       "jsr:@std/http@0.223": "jsr:@std/http@0.223.0",
       "jsr:@std/http@0.224": "jsr:@std/http@0.224.5",
@@ -24,6 +27,9 @@
       "npm:path-to-regexp@6.2.1": "npm:path-to-regexp@6.2.1"
     },
     "jsr": {
+      "@lucsoft/web-bson@0.3.1": {
+        "integrity": "dccad36fe5cc68286a4d3fe1993f7e7a81df0970c5946a5894dae9173adafe60"
+      },
       "@oak/commons@0.11.0": {
         "integrity": "07702bfe5c07cd8144c422022994da1f9fea466b185824f4be63a2b1b1a65125",
         "dependencies": [
@@ -49,6 +55,9 @@
       "@std/bytes@0.224.0": {
         "integrity": "a2250e1d0eb7d1c5a426f21267ab9bdeac2447fa87a3d0d1a467d3f7a6058e49"
       },
+      "@std/crypto@0.220.1": {
+        "integrity": "4cec173974f33398041a3f66cc2f9b2fcc4a5ceaddd0e60840887d3bb7289d23"
+      },
       "@std/crypto@0.223.0": {
         "integrity": "1aa9555ff56b09e197ad988ea200f84bc6781fd4fd83f3a156ee44449af93000",
         "dependencies": [
@@ -61,6 +70,9 @@
         "dependencies": [
           "jsr:@std/assert@^0.224.0"
         ]
+      },
+      "@std/encoding@0.220.1": {
+        "integrity": "8dc38dd72e36cd68857a5837e24eb09a64bb296b96c295239c75eec17d45d23f"
       },
       "@std/encoding@0.223.0": {
         "integrity": "2b5615a75e00337ce113f34cf2f9b8c18182c751a8dcc8b1a2c2fc0e117bef00"
@@ -391,6 +403,7 @@
     "https://deno.land/x/jose@v5.6.3/util/decode_protected_header.ts": "21cddd8c2d3ead3d151ea46852dea9644829086b98600604667d4291dc32cf7d",
     "https://deno.land/x/jose@v5.6.3/util/errors.ts": "5b57f5e40b3e7302634d4f31d848b23e58cc2322a547dbd35e75c792c4b3164c",
     "https://deno.land/x/jose@v5.6.3/util/runtime.ts": "088cae7df0d285065f141d880c5c21a572234997082337d1125d7f1603059642",
+    "https://deno.land/x/mongo@v0.33.0/deps.ts": "0260e372714ea433bbe675a5f3d467edceced6e12f406d156ba42724695b0a74",
     "https://deno.land/x/oak@v16.1.0/application.ts": "c6361a3c3fb3607c5dfe1800b156f07b612979dc0498c746aeca54bb9f643a92",
     "https://deno.land/x/oak@v16.1.0/body.ts": "0f8a6843720ea6cebba2132a5e4dda5a97bbd49e7fb64e96ade0b7c8009bba2d",
     "https://deno.land/x/oak@v16.1.0/context.ts": "a93a5b41dde2ceb52232ae31b3496be76e8a42ea421a73d7cffe9e640adb8dfd",

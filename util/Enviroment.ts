@@ -7,4 +7,4 @@ export const MONGODB_URI = env["MONGODB_URI"];
 export const FRONTEND_URL = env["FRONTEND_URL"];
 export const JWT_SECRET = new TextEncoder().encode(env["JWT_SECRET"]);
 export const ENCRYPT_SECRET = env["ENCRYPT_SECRET"];
-export const ENVIROMENT = env["ENVIROMENT"];
+export const ENVIROMENT = env["ENVIROMENT"]; // PRODUCTION || any other value
