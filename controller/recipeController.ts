@@ -49,9 +49,9 @@ recipeRouter.post("/api/recipes", jwtMiddleware, async(ctx, next) => {
   await next();
 });
 
-recipeRouter.put("/api/recipes/:recipeId", jwtMiddleware, async(ctx, next) => {
+recipeRouter.put("/api/recipes/:recipeId/user/:userId", jwtMiddleware, async(ctx, next) => {
   try {
-    const { recipeId } = ctx.params;
+    const { recipeId, userId } = ctx.params;
     const updatedRecipe = await ctx.request.body.json() as Recipe;
     if(!updatedRecipe) {
       ctx.response.status = 400;
@@ -61,6 +61,8 @@ recipeRouter.put("/api/recipes/:recipeId", jwtMiddleware, async(ctx, next) => {
       } as ApiResponse;
       return;
     }
+    const isUserIntegrityVerified = await verifyUserIntegrity(ctx, userId);
+    if (!isUserIntegrityVerified) return;
     await recipeModel.updateOne({ _id: recipeId }, updatedRecipe);
     ctx.response.status = 200;
     ctx.response.body = {
@@ -73,9 +75,9 @@ recipeRouter.put("/api/recipes/:recipeId", jwtMiddleware, async(ctx, next) => {
   await next();
 });
 
-recipeRouter.delete("/api/recipes/:recipeId", jwtMiddleware, async(ctx, next) => {
+recipeRouter.delete("/api/recipes/:recipeId/user/:userId", jwtMiddleware, async(ctx, next) => {
   try {
-    const { recipeId } = ctx.params;
+    const { recipeId, userId } = ctx.params;
     const recipe = await recipeModel.findOne({ _id: recipeId });
     if(!recipe) {
       ctx.response.status = 404;
@@ -85,6 +87,8 @@ recipeRouter.delete("/api/recipes/:recipeId", jwtMiddleware, async(ctx, next) =>
       } as ApiResponse;
       return;
     }
+    const isUserIntegrityVerified = await verifyUserIntegrity(ctx, userId);
+    if (!isUserIntegrityVerified) return;
     await recipeModel.deleteOne({ _id: recipeId });
     ctx.response.status = 200;
     ctx.response.body = {
