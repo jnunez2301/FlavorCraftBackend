@@ -19,7 +19,7 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
     const { nickname, password } = await ctx.request.body.json();   
     const user: User | null = await userModel.findOne({$or: [{email: nickname}, {username: nickname}]});
     if (!user) {
-      ctx.response.status = Status.Unauthorized;
+      ctx.response.status = Status.Forbidden;
       ctx.response.body = {
         success: false,
         message: ResponseTypes.WRONG_CREDENTIALS,
@@ -28,7 +28,7 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
     }
     const isValidPassword = await compare(password, user.password);
     if (!isValidPassword) {
-      ctx.response.status = Status.Unauthorized;
+      ctx.response.status = Status.Forbidden;
       ctx.response.body = {
         success: false,
         message: ResponseTypes.WRONG_CREDENTIALS,

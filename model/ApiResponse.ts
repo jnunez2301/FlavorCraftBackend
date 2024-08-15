@@ -17,7 +17,7 @@ export enum ResponseTypes {
   USER_LOGGED_OUT = "You have successfully logged out",
 }
 type ApiResponse = {
-  message: ResponseTypes | string | Recipe[] | Recipe,
+  message: ResponseTypes | string | Recipe[] | Recipe | null,
   success: boolean
   session?: User
 }
