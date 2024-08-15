@@ -65,7 +65,7 @@ authRouter.post("/api/auth/register", async (ctx: Context) => {
   try {
     const body = await ctx.request.body.json();
     const userBody: User = await body;
-    const user = await userModel.findOne({ email: userBody.email });
+    const user = await userModel.findOne({$or: [{email: userBody.email}, {username: userBody.username}]});
     if (user) {
       ctx.response.status = Status.Conflict;
       ctx.response.body = {
