@@ -23,6 +23,31 @@ recipeRouter.get("/api/recipes/:userId", jwtMiddleware, async(ctx, next) => {
   await next();
 })
 
+recipeRouter.get("/api/recipes/:recipeId/user/:userId", jwtMiddleware, async(ctx, next) => {
+  try {
+    const { recipeId, userId } = ctx.params;
+    const recipe = await recipeModel.findOne({ _id: recipeId });
+    if(!recipe) {
+      ctx.response.status = 404;
+      ctx.response.body = {
+        success: false,
+        message: RecipeResponseTypes.RECIPE_NOT_FOUND,
+      } as ApiResponse;
+      return;
+    }
+    const isUserIntegrityVerified = await verifyUserIntegrity(ctx, userId);
+    if (!isUserIntegrityVerified) return;
+    ctx.response.status = 200;
+    ctx.response.body = {
+      success: true,
+      message: recipe,
+    } as ApiResponse;
+  } catch (error) {
+    apiError(ctx, error);
+  }
+  await next();
+})
+
 recipeRouter.post("/api/recipes", jwtMiddleware, async(ctx, next) => {
   try {
     const newRecipe = await ctx.request.body.json() as Recipe;
