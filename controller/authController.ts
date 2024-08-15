@@ -16,8 +16,8 @@ const authRouter = new Router();
 
 authRouter.post("/api/auth/login", async (ctx: Context) => {
   try {
-    const { email, password } = await ctx.request.body.json();   
-    const user: User | null = await userModel.findOne({ email: email });
+    const { nickname, password } = await ctx.request.body.json();   
+    const user: User | null = await userModel.findOne({$or: [{email: nickname}, {username: nickname}]});
     if (!user) {
       ctx.response.status = Status.Unauthorized;
       ctx.response.body = {
