@@ -7,14 +7,14 @@ export type Recipe = {
   title: string;
   description: string;
   category: string;
-  typeOfCousine: string;
+  typeOfCuisine: string;
   caloriesPerServing: number;
   servings: number;
   prepTime: number;
   ingredients: string[];
   sauceInstructions?: string[];
   instructions: string[];
-  sideDishesReeccomendations?: string[];
+  sideDishesRecommendations?: string[];
   backgroundImg?: string;
 };
 export enum RecipeResponseTypes {
@@ -47,7 +47,7 @@ const recipeSchema = new mongoose.Schema<Recipe>(
       required: true,
       minlength: 3,
     },
-    typeOfCousine: {
+    typeOfCuisine: {
       type: String,
       required: true,
       minlength: 3,
@@ -88,7 +88,7 @@ const recipeSchema = new mongoose.Schema<Recipe>(
       required: true,
       minlength: 1,
     },
-    sideDishesReeccomendations: {
+    sideDishesRecommendations: {
       type: [String],
       required: false,
       minlength: 1,
