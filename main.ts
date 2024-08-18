@@ -1,10 +1,10 @@
 import { Application, Router } from "https://deno.land/x/oak@v16.1.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import mongoose from 'npm:mongoose';
-import { FRONTEND_URL } from "./util/Enviroment.ts";
-import { MONGODB_URI } from "./util/Enviroment.ts";
+import { FRONTEND_URL } from "./util/Environment.ts";
+import { MONGODB_URI } from "./util/Environment.ts";
 import logger from './middleware/logger.ts';
-import { SERVER_PORT } from "./util/Enviroment.ts";
+import { SERVER_PORT } from "./util/Environment.ts";
 import authRouter from "./controller/authController.ts";
 import recipeRouter from "./controller/recipeController.ts";
 

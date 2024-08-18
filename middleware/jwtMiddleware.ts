@@ -1,6 +1,6 @@
 import { jwtVerify } from "https://deno.land/x/jose@v5.6.3/jwt/verify.ts";
 import { Context } from "https://deno.land/x/oak@v16.1.0/mod.ts";
-import { ENCRYPT_SECRET, JWT_SECRET } from "../util/Enviroment.ts";
+import { ENCRYPT_SECRET, JWT_SECRET } from "../util/Environment.ts";
 import { Status } from "jsr:@oak/commons@0.11/status";
 import { aes_gcm_decrypt } from "https://deno.land/x/crypto_aes_gcm@2.0.3/index.js";
 import ApiResponse, { ResponseTypes } from "../model/ApiResponse.ts";

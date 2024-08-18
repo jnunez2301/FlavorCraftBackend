@@ -4,6 +4,7 @@ import { apiError } from "../util/apiError.ts";
 import recipeModel, { Recipe, RecipeResponseTypes } from "../model/Recipe.ts";
 import verifyUserIntegrity from "../middleware/verifyUserIntegrity.ts";
 import ApiResponse, { ResponseTypes } from "../model/ApiResponse.ts";
+import { s3StoreImg } from "../util/s3Client.ts";
 const recipeRouter = new Router();
 
 recipeRouter.get("/api/recipes/:userId", jwtMiddleware, async (ctx, next) => {
@@ -137,6 +138,18 @@ recipeRouter.put(
           message: ResponseTypes.NOT_AUTHORIZED,
         } as ApiResponse;
         return;
+      }
+      if(updatedRecipe.backgroundImg){
+        const fileUrl = await s3StoreImg(updatedRecipe.backgroundImg, `${recipeId}.png`);
+        if(!fileUrl){
+          ctx.response.status = 500;
+          ctx.response.body = {
+            success: false,
+            message: ResponseTypes.IMAGE_UPLOAD_FAILED,
+          } as ApiResponse;
+          return;
+        }
+        updatedRecipe.backgroundImg = fileUrl;
       }
       await recipeModel.updateOne({ _id: recipeId }, updatedRecipe);
       ctx.response.status = 200;

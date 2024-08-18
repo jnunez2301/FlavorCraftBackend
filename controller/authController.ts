@@ -3,7 +3,7 @@ import userModel, { User } from "../model/User.ts";
 import { Status } from "jsr:@oak/commons@0.11/status";
 import { hash, compare } from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import { SignJWT } from "https://deno.land/x/jose@v5.6.3/index.ts";
-import { ENCRYPT_SECRET, ENVIROMENT, JWT_SECRET } from "../util/Enviroment.ts";
+import { ENCRYPT_SECRET, ENVIRONMENT, JWT_SECRET } from "../util/Environment.ts";
 import authMiddleware from "../middleware/jwtMiddleware.ts";
 import { aes_gcm_encrypt } from 'https://deno.land/x/crypto_aes_gcm@2.0.3/index.js';
 import ApiResponse from "../model/ApiResponse.ts";
@@ -47,7 +47,7 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
     ctx.cookies.set("jwt_token", `Bearer ${encrypted}`, {
       httpOnly: true,
       sameSite: "strict",
-      secure: ENVIROMENT === "PRODUCTION",
+      secure: ENVIRONMENT === "PRODUCTION",
       maxAge: 7200,
     });
     

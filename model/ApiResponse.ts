@@ -15,6 +15,7 @@ export enum ResponseTypes {
   USER_CREATED = "You have registered successfully",
   USER_LOGGED_IN = "You have successfully logged in",
   USER_LOGGED_OUT = "You have successfully logged out",
+  IMAGE_UPLOAD_FAILED = "The image upload failed",
 }
 type ApiResponse = {
   message: ResponseTypes | string | Recipe[] | Recipe,
