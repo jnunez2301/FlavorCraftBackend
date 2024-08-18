@@ -37,20 +37,7 @@ export async function s3StoreImg(base64String: string, fileName: string): Promis
       Key: fileName,
       Body: byteArray,
     };
-    const invalidationParams = {
-      DistributionId: AWS_CLOUDFRONT_DISTRIBUTION_ID,
-      InvalidationBatch: {
-        CallerReference: fileName,
-        Paths: {
-          Quantity: 1,
-          Items: [
-            "/" + fileName,
-          ],
-        },
-      },
-    };
-    const invalidationCommand = new CreateInvalidationCommand(invalidationParams);
-    await cloudFrontClient.send(invalidationCommand);
+    s3DeleteImg(fileName);
     const command = new PutObjectCommand(params);
     const fileUrl = `${AWS_CLOUDFRONT_URL}/${fileName}`;
     await s3Client.send(command);
@@ -66,10 +53,12 @@ export async function s3DeleteImg(fileName: string): Promise<boolean> {
       Bucket: AWS_BUCKET,
       Key: fileName,
     };
+    const uniqueCallerReference = `${fileName}-${Date.now()}`;
+
     const invalidationParams = {
       DistributionId: AWS_CLOUDFRONT_DISTRIBUTION_ID,
       InvalidationBatch: {
-        CallerReference: fileName,
+        CallerReference: uniqueCallerReference,
         Paths: {
           Quantity: 1,
           Items: [
