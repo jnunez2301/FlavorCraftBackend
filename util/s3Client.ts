@@ -1,5 +1,5 @@
-import { S3Client, PutObjectCommand } from "npm:@aws-sdk/client-s3@3.631.0";
-import { AWS_REGION } from "./Environment.ts";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "npm:@aws-sdk/client-s3@3.631.0";
+import { AWS_CLOUDFRONT_URL, AWS_REGION } from "./Environment.ts";
 import { AWS_SECRET_KEY } from "./Environment.ts";
 import { AWS_ACCESS_KEY } from "./Environment.ts";
 import { AWS_BUCKET } from "./Environment.ts";
@@ -28,14 +28,27 @@ export async function s3StoreImg(base64String: string, fileName: string): Promis
       Key: fileName,
       Body: byteArray,
     };
-
+    fileName = `${fileName}?${new Date().getTime()}`;
     const command = new PutObjectCommand(params);
-    const fileUrl = `https://${AWS_BUCKET}.s3.amazonaws.com/${fileName}`;
+    const fileUrl = `${AWS_CLOUDFRONT_URL}/${fileName}`;
     await s3Client.send(command);
     return fileUrl;
   } catch (error) {
     console.error('Error uploading file:', error);
     return undefined;
+  }
+}
+export async function s3DeleteImg(fileName: string): Promise<boolean> {
+  try {
+    const params = {
+      Bucket: AWS_BUCKET,
+      Key: fileName,
+    };
+    await s3Client.send(new DeleteObjectCommand(params));
+    return true;
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    return false;
   }
 }
 export default s3Client;

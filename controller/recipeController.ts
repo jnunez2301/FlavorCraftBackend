@@ -4,7 +4,7 @@ import { apiError } from "../util/apiError.ts";
 import recipeModel, { Recipe, RecipeResponseTypes } from "../model/Recipe.ts";
 import verifyUserIntegrity from "../middleware/verifyUserIntegrity.ts";
 import ApiResponse, { ResponseTypes } from "../model/ApiResponse.ts";
-import { s3StoreImg } from "../util/s3Client.ts";
+import { s3DeleteImg, s3StoreImg } from "../util/s3Client.ts";
 const recipeRouter = new Router();
 
 recipeRouter.get("/api/recipes/:userId", jwtMiddleware, async (ctx, next) => {
@@ -84,11 +84,20 @@ recipeRouter.post("/api/recipes", jwtMiddleware, async (ctx, next) => {
       } as ApiResponse;
       return;
     }
-    const isUserIntegrityVerified = await verifyUserIntegrity(
-      ctx,
-      newRecipe.userId + ""
-    );
+    const isUserIntegrityVerified = await verifyUserIntegrity(ctx,newRecipe.userId + "");
     if (!isUserIntegrityVerified) return;
+    if(newRecipe.backgroundImg){
+      const fileUrl = await s3StoreImg(newRecipe.backgroundImg, `${newRecipe.title + newRecipe.userId}.jpg`);
+      if(!fileUrl){
+        ctx.response.status = 500;
+        ctx.response.body = {
+          success: false,
+          message: ResponseTypes.IMAGE_UPLOAD_FAILED,
+        } as ApiResponse;
+        return;
+      }
+      newRecipe.backgroundImg = fileUrl;
+    }
     await recipeModel.create(newRecipe);
     ctx.response.status = 201;
     ctx.response.body = {
@@ -140,7 +149,7 @@ recipeRouter.put(
         return;
       }
       if(updatedRecipe.backgroundImg){
-        const fileUrl = await s3StoreImg(updatedRecipe.backgroundImg, `${recipeId}.png`);
+        const fileUrl = await s3StoreImg(updatedRecipe.backgroundImg, `${updatedRecipe.title + updatedRecipe.userId}.jpg`);
         if(!fileUrl){
           ctx.response.status = 500;
           ctx.response.body = {
@@ -192,6 +201,10 @@ recipeRouter.delete(
           message: ResponseTypes.NOT_AUTHORIZED,
         } as ApiResponse;
         return;
+      }
+      if(recipe.backgroundImg){
+        const fileName = `${recipe.title + recipe.userId}.jpg`;
+        await s3DeleteImg(fileName);
       }
       await recipeModel.deleteOne({ _id: recipeId });
       ctx.response.status = 200;
