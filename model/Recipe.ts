@@ -16,6 +16,7 @@ export type Recipe = {
   instructions: string[];
   sideDishesRecommendations?: string[];
   backgroundImg?: string;
+  publicRecipe?: boolean;
 };
 export enum RecipeResponseTypes {
   RECIPE_CREATED = "Recipe created successfully",
@@ -98,6 +99,11 @@ const recipeSchema = new mongoose.Schema<Recipe>(
       required: false,
       default: "",
     },
+    publicRecipe: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
   { timestamps: true }
 );

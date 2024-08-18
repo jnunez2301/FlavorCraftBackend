@@ -25,9 +25,8 @@ export async function verifyUserIntegrity(ctx: Context, currentUserId: string): 
     } as ApiResponse;
     return false;
   }
-  
   if (currentUser.email !== email) {
-    ctx.response.status = Status.BadRequest;
+    ctx.response.status = Status.Forbidden;
     ctx.response.body = {
       success: false,
       message: ResponseTypes.NOT_AUTHORIZED,
