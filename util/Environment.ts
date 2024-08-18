@@ -14,3 +14,4 @@ export const AWS_SECRET_KEY = env["AWS_SECRET_KEY"];
 export const AWS_REGION = env["AWS_REGION"];
 export const AWS_BUCKET = env["AWS_BUCKET"];
 export const AWS_CLOUDFRONT_URL = env["AWS_CLOUDFRONT_URL"];
+export const AWS_CLOUDFRONT_DISTRIBUTION_ID = env["AWS_CLOUDFRONT_DISTRIBUTION_ID"];

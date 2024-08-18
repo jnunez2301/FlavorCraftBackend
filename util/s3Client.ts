@@ -1,10 +1,19 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "npm:@aws-sdk/client-s3@3.631.0";
-import { AWS_CLOUDFRONT_URL, AWS_REGION } from "./Environment.ts";
+import { CloudFrontClient, CreateInvalidationCommand } from "npm:@aws-sdk/client-cloudfront"
+import { AWS_CLOUDFRONT_DISTRIBUTION_ID, AWS_CLOUDFRONT_URL, AWS_REGION } from "./Environment.ts";
 import { AWS_SECRET_KEY } from "./Environment.ts";
 import { AWS_ACCESS_KEY } from "./Environment.ts";
 import { AWS_BUCKET } from "./Environment.ts";
 
 const s3Client = new S3Client({
+  region: AWS_REGION,
+  credentials: {
+    accessKeyId: AWS_ACCESS_KEY,
+    secretAccessKey: AWS_SECRET_KEY,
+  },
+});
+
+const cloudFrontClient = new CloudFrontClient({
   region: AWS_REGION,
   credentials: {
     accessKeyId: AWS_ACCESS_KEY,
@@ -22,13 +31,26 @@ export async function s3StoreImg(base64String: string, fileName: string): Promis
     for (let i = 0; i < binaryData.length; i++) {
       byteArray[i] = binaryData.charCodeAt(i);
     }
-
+    fileName = fileName.split(" ").join("").toLocaleLowerCase();
     const params = {
       Bucket: AWS_BUCKET,
       Key: fileName,
       Body: byteArray,
     };
-    fileName = `${fileName}?${new Date().getTime()}`;
+    const invalidationParams = {
+      DistributionId: AWS_CLOUDFRONT_DISTRIBUTION_ID,
+      InvalidationBatch: {
+        CallerReference: fileName,
+        Paths: {
+          Quantity: 1,
+          Items: [
+            "/" + fileName,
+          ],
+        },
+      },
+    };
+    const invalidationCommand = new CreateInvalidationCommand(invalidationParams);
+    await cloudFrontClient.send(invalidationCommand);
     const command = new PutObjectCommand(params);
     const fileUrl = `${AWS_CLOUDFRONT_URL}/${fileName}`;
     await s3Client.send(command);
@@ -44,6 +66,20 @@ export async function s3DeleteImg(fileName: string): Promise<boolean> {
       Bucket: AWS_BUCKET,
       Key: fileName,
     };
+    const invalidationParams = {
+      DistributionId: AWS_CLOUDFRONT_DISTRIBUTION_ID,
+      InvalidationBatch: {
+        CallerReference: fileName,
+        Paths: {
+          Quantity: 1,
+          Items: [
+            "/" + fileName,
+          ],
+        },
+      },
+    };
+    const invalidationCommand = new CreateInvalidationCommand(invalidationParams);
+    await cloudFrontClient.send(invalidationCommand);
     await s3Client.send(new DeleteObjectCommand(params));
     return true;
   } catch (error) {
