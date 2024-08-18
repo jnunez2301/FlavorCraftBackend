@@ -2,8 +2,9 @@ import { Context } from "https://deno.land/x/oak@v16.1.0/mod.ts";
 import ApiResponse, { ResponseTypes } from "../model/ApiResponse.ts";
 import { Status } from "https://deno.land/x/oak@v16.1.0/deps.ts";
 import userModel, { User } from "../model/User.ts";
+import { ObjectId } from "https://deno.land/x/mongo@v0.33.0/deps.ts";
 
-export async function verifyUserIntegrity(ctx: Context, currentUserId: string): Promise<boolean> {
+export async function verifyUserIntegrity(ctx: Context, currentUserId: string | ObjectId): Promise<boolean> {
   const { email } = await ctx.state.user;
   
   if (!email) {

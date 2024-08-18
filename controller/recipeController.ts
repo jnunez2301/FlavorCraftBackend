@@ -115,12 +115,21 @@ recipeRouter.put(
         } as ApiResponse;
         return;
       }
+      const currentRecipe = await recipeModel.findOne({ _id: recipeId });
+      if(!currentRecipe) {
+        ctx.response.status = 404;
+        ctx.response.body = {
+          success: false,
+          message: RecipeResponseTypes.RECIPE_NOT_FOUND,
+        } as ApiResponse;
+        return;
+      }
       const isUserIntegrityVerified = await verifyUserIntegrity(
         ctx,
-        updatedRecipe.userId + ""
+        currentRecipe.userId
       );
       if (!isUserIntegrityVerified) return;
-      const isSameUser = userId === updatedRecipe.userId + "";
+      const isSameUser = userId === currentRecipe.userId + "";
       if (!isSameUser) {
         ctx.response.status = 403;
         ctx.response.body = {
