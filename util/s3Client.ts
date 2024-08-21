@@ -23,6 +23,7 @@ const cloudFrontClient = new CloudFrontClient({
 
 export async function s3StoreImg(base64String: string, fileName: string): Promise<string | undefined> {
   try {
+    if(base64String.includes("http")) return;
     // Extract the base64 data and decode it
     const base64Data = base64String.split(",")[1]; // Remove the data URL part
     const binaryData = atob(base64Data); // Decode base64 to binary string
