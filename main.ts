@@ -1,7 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v16.1.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import mongoose from "npm:mongoose";
-import { FRONTEND_URL } from "./util/Environment.ts";
 import { MONGODB_URI } from "./util/Environment.ts";
 import logger from "./middleware/logger.ts";
 import { SERVER_PORT } from "./util/Environment.ts";
@@ -13,13 +12,14 @@ const router = new Router();
 
 app.use(
   oakCors({
-    origin: FRONTEND_URL,
+    origin: false,
     credentials: true,
   })
 );
-router.get("/", (ctx) => {
-  ctx.response.body = "Hello World!";
-});
+// '/' should render dist/index.html
+router.get("/",(ctx) => {
+  ctx.response.body = "Hello Deno!";
+})
 async function connectMongoDb() {
   try {
     await mongoose.connect(MONGODB_URI);
