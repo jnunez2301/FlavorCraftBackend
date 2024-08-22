@@ -1,5 +1,4 @@
 import { Application, Router } from "https://deno.land/x/oak@v16.1.0/mod.ts";
-import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import mongoose from "npm:mongoose";
 import { MONGODB_URI } from "./util/Environment.ts";
 import logger from "./middleware/logger.ts";
@@ -10,15 +9,23 @@ import recipeRouter from "./controller/recipeController.ts";
 const app = new Application();
 const router = new Router();
 
-app.use(
-  oakCors({
-    origin: false,
-    credentials: true,
-  })
-);
+app.use((ctx, next) => {
+  ctx.response.headers.set('Access-Control-Allow-Origin', 'https://flavorcraft.jnunez.buzz'); // Set the specific origin
+  ctx.response.headers.set('Access-Control-Allow-Credentials', 'true'); // Allow credentials
+  ctx.response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow necessary headers
+  ctx.response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allow necessary methods
+  
+  // Handle preflight requests (OPTIONS method)
+  if (ctx.request.method === 'OPTIONS') {
+    ctx.response.status = 204;
+    return;
+  }
+
+  return next();
+});
 // '/' should render dist/index.html
 router.get("/",(ctx) => {
-  ctx.response.body = "Hello Deno!";
+  ctx.response.body = "DENO PLSSSSSS";
 })
 async function connectMongoDb() {
   try {
