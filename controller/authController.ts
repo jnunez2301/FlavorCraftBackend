@@ -1,7 +1,6 @@
 import { Context, Router } from "https://deno.land/x/oak@v16.1.0/mod.ts";
 import userModel, { User } from "../model/User.ts";
 import { Status } from "jsr:@oak/commons@0.11/status";
-import { hash, compare } from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import { SignJWT } from "https://deno.land/x/jose@v5.6.3/index.ts";
 import { ENCRYPT_SECRET, ENVIRONMENT, JWT_SECRET } from "../util/Environment.ts";
 import authMiddleware from "../middleware/jwtMiddleware.ts";
@@ -10,6 +9,8 @@ import ApiResponse from "../model/ApiResponse.ts";
 import { ResponseTypes } from "../model/ApiResponse.ts";
 import { apiError } from "../util/apiError.ts";
 import minifyUser from "../util/minifyUser.ts";
+import { hashSync } from "https://deno.land/x/bcrypt@v0.4.1/src/main.ts";
+import { compareSync } from "https://deno.land/x/bcrypt@v0.4.1/src/main.ts";
 
 
 const authRouter = new Router();
@@ -26,7 +27,7 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
       } as ApiResponse;
       return;
     }
-    const isValidPassword = await compare(password, user.password);
+    const isValidPassword = compareSync(password, user.password);
     if (!isValidPassword) {
       ctx.response.status = Status.Forbidden;
       ctx.response.body = {
@@ -74,7 +75,7 @@ authRouter.post("/api/auth/register", async (ctx: Context) => {
       } as ApiResponse;
       return;
     } else {
-      userBody.password = await hash(userBody.password);
+      userBody.password = hashSync(userBody.password);
       await userModel.create(userBody);
       ctx.response.status = Status.OK;
       ctx.response.body = {
