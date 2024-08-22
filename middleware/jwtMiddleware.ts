@@ -11,6 +11,9 @@ async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
     const token = authHeader.split(" ")[1];
     if (token) {
       try {
+        if(!ENCRYPT_SECRET  || !JWT_SECRET) {
+          throw new Error("ENCRYPT_SECRET or JWT_SECRET is not set");
+        }
         const decrypted = await aes_gcm_decrypt(token, ENCRYPT_SECRET);
         const { payload } = await jwtVerify(decrypted, JWT_SECRET);
         ctx.state.user = payload;

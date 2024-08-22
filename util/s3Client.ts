@@ -5,6 +5,9 @@ import { AWS_SECRET_KEY } from "./Environment.ts";
 import { AWS_ACCESS_KEY } from "./Environment.ts";
 import { AWS_BUCKET } from "./Environment.ts";
 
+if(!AWS_ACCESS_KEY || !AWS_SECRET_KEY || !AWS_BUCKET || !AWS_REGION || !AWS_CLOUDFRONT_URL || !AWS_CLOUDFRONT_DISTRIBUTION_ID){
+  throw new Error("AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET, AWS_REGION, AWS_CLOUDFRONT_URL, or AWS_CLOUDFRONT_DISTRIBUTION_ID is not set");
+}
 const s3Client = new S3Client({
   region: AWS_REGION,
   credentials: {

@@ -1,16 +1,13 @@
-import { load } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
 
-const env = await load();
-
-export const SERVER_PORT = +env["SERVER_PORT"] || 8080;
-export const MONGODB_URI = env["MONGODB_URI"];
-export const FRONTEND_URL = env["FRONTEND_URL"];
-export const JWT_SECRET = new TextEncoder().encode(env["JWT_SECRET"]);
-export const ENCRYPT_SECRET = env["ENCRYPT_SECRET"];
-export const ENVIRONMENT = env["ENVIRONMENT"]; // PRODUCTION || any other value
-export const AWS_ACCESS_KEY = env["AWS_ACCESS_KEY"];
-export const AWS_SECRET_KEY = env["AWS_SECRET_KEY"];
-export const AWS_REGION = env["AWS_REGION"];
-export const AWS_BUCKET = env["AWS_BUCKET"];
-export const AWS_CLOUDFRONT_URL = env["AWS_CLOUDFRONT_URL"];
-export const AWS_CLOUDFRONT_DISTRIBUTION_ID = env["AWS_CLOUDFRONT_DISTRIBUTION_ID"];
+export const SERVER_PORT = Deno.env.get("SERVER_PORT");
+export const MONGODB_URI = Deno.env.get("MONGODB_URI");
+export const FRONTEND_URL = Deno.env.get("FRONTEND_URL");
+export const JWT_SECRET = new TextEncoder().encode(Deno.env.get("JWT_SECRET"));
+export const ENCRYPT_SECRET = Deno.env.get("ENCRYPT_SECRET");
+export const ENVIRONMENT = Deno.env.get("ENVIRONMENT"); // PRODUCTION || any other value
+export const AWS_ACCESS_KEY = Deno.env.get("AWS_ACCESS_KEY");
+export const AWS_SECRET_KEY = Deno.env.get("AWS_SECRET_KEY");
+export const AWS_REGION = Deno.env.get("AWS_REGION");
+export const AWS_BUCKET = Deno.env.get("AWS_BUCKET");
+export const AWS_CLOUDFRONT_URL = Deno.env.get("AWS_CLOUDFRONT_URL");
+export const AWS_CLOUDFRONT_DISTRIBUTION_ID = Deno.env.get("AWS_CLOUDFRONT_DISTRIBUTION_ID");

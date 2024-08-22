@@ -2,7 +2,7 @@ import { Context, Router } from "https://deno.land/x/oak@v16.1.0/mod.ts";
 import userModel, { User } from "../model/User.ts";
 import { Status } from "jsr:@oak/commons@0.11/status";
 import { SignJWT } from "https://deno.land/x/jose@v5.6.3/index.ts";
-import { ENCRYPT_SECRET, ENVIRONMENT, JWT_SECRET } from "../util/Environment.ts";
+import { ENCRYPT_SECRET, JWT_SECRET } from "../util/Environment.ts";
 import authMiddleware from "../middleware/jwtMiddleware.ts";
 import { aes_gcm_encrypt } from 'https://deno.land/x/crypto_aes_gcm@2.0.3/index.js';
 import ApiResponse from "../model/ApiResponse.ts";
@@ -12,6 +12,9 @@ import minifyUser from "../util/minifyUser.ts";
 import { hashSync } from "https://deno.land/x/bcrypt@v0.4.1/src/main.ts";
 import { compareSync } from "https://deno.land/x/bcrypt@v0.4.1/src/main.ts";
 
+if(!ENCRYPT_SECRET || !JWT_SECRET){
+  throw new Error("ENCRYPT_SECRET or JWT_SECRET is not set");
+}
 
 const authRouter = new Router();
 
@@ -41,14 +44,14 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
       .setIssuedAt()
       .setExpirationTime("2h")
       .sign(JWT_SECRET);
-
+    if(!ENCRYPT_SECRET) throw new Error("ENCRYPT_SECRET is not set");
     const encrypted = await aes_gcm_encrypt(jwtToken, ENCRYPT_SECRET);
 
     ctx.response.status = Status.OK;
     ctx.cookies.set("jwt_token", `Bearer ${encrypted}`, {
       httpOnly: true,
-      sameSite: "strict",
-      secure: ENVIRONMENT === "PRODUCTION",
+      sameSite: "none",
+      secure: true,
       maxAge: 7200,
     });
     
