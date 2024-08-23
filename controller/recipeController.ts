@@ -296,7 +296,11 @@ recipeRouter.post("/api/recipes", jwtMiddleware, async (ctx, next) => {
       newRecipe.userId + ""
     );
     if (!isUserIntegrityVerified) return;
-    if (newRecipe.backgroundImg && newRecipe.backgroundImg.trim() !== "" && newRecipe.backgroundImg !== newRecipe.backgroundImg) {
+    if (
+      newRecipe.backgroundImg &&
+      newRecipe.backgroundImg.trim() !== "" &&
+      newRecipe.backgroundImg !== newRecipe.backgroundImg
+    ) {
       const fileUrl = await s3StoreImg(
         newRecipe.backgroundImg,
         `${newRecipe.title + newRecipe.userId}.jpg`
@@ -361,7 +365,11 @@ recipeRouter.put(
         } as ApiResponse;
         return;
       }
-      if (updatedRecipe.backgroundImg && updatedRecipe.backgroundImg.trim() !== "" && updatedRecipe.backgroundImg !== currentRecipe.backgroundImg) {
+      if (
+        updatedRecipe.backgroundImg &&
+        updatedRecipe.backgroundImg.trim() !== "" &&
+        updatedRecipe.backgroundImg !== currentRecipe.backgroundImg
+      ) {
         const fileUrl = await s3StoreImg(
           updatedRecipe.backgroundImg,
           `${updatedRecipe.title + updatedRecipe.userId}.jpg`

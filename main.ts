@@ -25,7 +25,7 @@ app.use((ctx, next) => {
   return next();
 });
 router.get("/", (ctx) => {
-  ctx.response.body = "FlavorCraft API\n Version 1.0.0 \n created by JNunez";
+  ctx.response.body = "FlavorCraft API\n Version 1.1.1 \n created by JNunez\n May token be with you!";
 });
 
 async function connectMongoDb() {

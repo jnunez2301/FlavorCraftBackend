@@ -7,9 +7,16 @@ import ApiResponse, { ResponseTypes } from "../model/ApiResponse.ts";
 
 async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
   const authHeader = ctx.request.headers.get("Authorization");
-  console.log(authHeader);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
+    if(token.trim() === "null" || !token){
+      ctx.response.status = Status.Forbidden;
+      ctx.response.body = {
+        success: false,
+        message: ResponseTypes.TOKEN_NOT_PROVIDED,
+      } as ApiResponse;
+      return;
+    }
     if (token) {
       try {
         if(!ENCRYPT_SECRET  || !JWT_SECRET) {
