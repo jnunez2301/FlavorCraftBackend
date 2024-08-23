@@ -20,7 +20,8 @@ export enum ResponseTypes {
 type ApiResponse = {
   message: ResponseTypes | string | Recipe[] | Recipe,
   success: boolean
-  session?: User
+  session?: User,
+  token?: string
 }
 
 export default ApiResponse;

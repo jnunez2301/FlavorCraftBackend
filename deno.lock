@@ -14,6 +14,7 @@
       "jsr:@std/crypto@0.223": "jsr:@std/crypto@0.223.0",
       "jsr:@std/crypto@0.224": "jsr:@std/crypto@0.224.0",
       "jsr:@std/crypto@^0.220.1": "jsr:@std/crypto@0.220.1",
+      "jsr:@std/dotenv": "jsr:@std/dotenv@0.225.0",
       "jsr:@std/encoding@1.0.0-rc.2": "jsr:@std/encoding@1.0.0-rc.2",
       "jsr:@std/encoding@^0.220.1": "jsr:@std/encoding@0.220.1",
       "jsr:@std/encoding@^0.223.0": "jsr:@std/encoding@0.223.0",
@@ -76,6 +77,9 @@
         "dependencies": [
           "jsr:@std/assert@^0.224.0"
         ]
+      },
+      "@std/dotenv@0.225.0": {
+        "integrity": "44db32932c67df82790a3e6847d7007befb6cc22d71f2f3ee7b7d00e1f0d6c94"
       },
       "@std/encoding@0.220.1": {
         "integrity": "8dc38dd72e36cd68857a5837e24eb09a64bb296b96c295239c75eec17d45d23f"
@@ -6369,6 +6373,9 @@
       }
     }
   },
+  "redirects": {
+    "https://deno.land/x/dotenv/load.ts": "https://deno.land/x/dotenv@v3.2.2/load.ts"
+  },
   "remote": {
     "https://cdn.skypack.dev/-/@pdf-lib/standard-fonts@v1.0.0-Z8Dxw2SAoP39vRoTIKF1/dist=es2019,mode=imports/optimized/@pdf-lib/standard-fonts.js": "7e7233fe50eff7cdacd5dfe148b2e8793ef2c0aacd1b09d09d74fa71ea588eac",
     "https://cdn.skypack.dev/-/@pdf-lib/upng@v1.0.1-cDyYONcMEAs6JipZyc8F/dist=es2019,mode=imports/optimized/@pdf-lib/upng.js": "c1fa7f102bc8ece5a18e22f27a18929143c4bba9735b24ea23b0b0d8eaa8cd53",
@@ -6393,6 +6400,9 @@
     "https://deno.land/x/cors@v1.2.2/opineCors.ts": "fb5790115c26b7061d84b8d6c17d258a1e241bcab75b0bc3ca1fdb2e57bc5072",
     "https://deno.land/x/cors@v1.2.2/types.ts": "97546633ccc7f0df7a29bacba5d91dc6f61decdd1b65258300244dba905d34b8",
     "https://deno.land/x/crypto_aes_gcm@2.0.3/index.js": "50f2bd6335e98deb1c765f3f3738930859fc2e40dde0e23dec124455b601a845",
+    "https://deno.land/x/dotenv@v3.2.2/load.ts": "cbd76a0aee01aad8d09222afaa1dd04b84d9d3e44637503b01bf77a91df9e041",
+    "https://deno.land/x/dotenv@v3.2.2/mod.ts": "077b48773de9205266a0b44c3c3a3c3083449ed64bb0b6cc461b95720678d38e",
+    "https://deno.land/x/dotenv@v3.2.2/util.ts": "693730877b13f8ead2b79b2aa31e2a0652862f7dc0c5f6d2f313f4d39c7b7670",
     "https://deno.land/x/jose@v5.6.3/index.ts": "fa165e577e778713d000c3e04b456d950e3c30f057b9319aaa7549feaeb04aa5",
     "https://deno.land/x/jose@v5.6.3/jwe/compact/decrypt.ts": "2d32f0b41e1cc4f428b6dcae1c8931fae9756d7ece45d9e870c558ed1ab27bc8",
     "https://deno.land/x/jose@v5.6.3/jwe/compact/encrypt.ts": "6d925600f9a8da1a91cbccf0f0bb9e8f26f1b5238566d4033d2e34b8336a7c3c",

@@ -23,7 +23,7 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
     const { nickname, password } = await ctx.request.body.json();   
     const user: User | null = await userModel.findOne({$or: [{email: nickname}, {username: nickname}]});
     if (!user) {
-      ctx.response.status = Status.Forbidden;
+      ctx.response.status = Status.BadRequest;
       ctx.response.body = {
         success: false,
         message: ResponseTypes.WRONG_CREDENTIALS,
@@ -32,7 +32,7 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
     }
     const isValidPassword = compareSync(password, user.password);
     if (!isValidPassword) {
-      ctx.response.status = Status.Forbidden;
+      ctx.response.status = Status.BadRequest;
       ctx.response.body = {
         success: false,
         message: ResponseTypes.WRONG_CREDENTIALS,
@@ -42,23 +42,16 @@ authRouter.post("/api/auth/login", async (ctx: Context) => {
     const jwtToken = await new SignJWT({ email: user.email, role: user.role })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("2h")
+      .setExpirationTime("24h")
       .sign(JWT_SECRET);
     if(!ENCRYPT_SECRET) throw new Error("ENCRYPT_SECRET is not set");
-    const encrypted = await aes_gcm_encrypt(jwtToken, ENCRYPT_SECRET);
-
+    const encryptedToken = await aes_gcm_encrypt(jwtToken, ENCRYPT_SECRET);
     ctx.response.status = Status.OK;
-    ctx.cookies.set("jwt_token", `Bearer ${encrypted}`, {
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-      maxAge: 7200,
-    });
-    
     ctx.response.body = {
       success: true,
       message: ResponseTypes.USER_LOGGED_IN,
       session: minifyUser(user),
+      token: encryptedToken,
     } as ApiResponse;
   } catch (err) {
     apiError(ctx, err);

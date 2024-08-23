@@ -6,7 +6,8 @@ import { aes_gcm_decrypt } from "https://deno.land/x/crypto_aes_gcm@2.0.3/index.
 import ApiResponse, { ResponseTypes } from "../model/ApiResponse.ts";
 
 async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
-  const authHeader = await ctx.cookies.get("jwt_token");
+  const authHeader = ctx.request.headers.get("Authorization");
+  console.log(authHeader);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     if (token) {
@@ -19,7 +20,7 @@ async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
         ctx.state.user = payload;
         await next();
       } catch (err) {
-        ctx.response.status = Status.Unauthorized;
+        ctx.response.status = Status.Forbidden;
         ctx.response.body = {
           success: false,
           message: err.message || ResponseTypes.INVALID_TOKEN,
@@ -27,7 +28,7 @@ async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
         return;
       }
     } else {
-      ctx.response.status = Status.Unauthorized;
+      ctx.response.status = Status.Forbidden;
       ctx.response.body = {
         success: false,
         message: ResponseTypes.TOKEN_NOT_PROVIDED,
@@ -35,7 +36,7 @@ async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
       return;
     }
   } else {
-    ctx.response.status = Status.Unauthorized;
+    ctx.response.status = Status.Forbidden;
     ctx.response.body = {
       success: false,
       message: ResponseTypes.TOKEN_NOT_PROVIDED,
