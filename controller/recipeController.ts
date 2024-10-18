@@ -297,7 +297,6 @@ recipeRouter.post("/api/recipes", jwtMiddleware, async (ctx, next) => {
     );
     if (!isUserIntegrityVerified) return;
     if (newRecipe.backgroundImg) {
-      
       const fileUrl = await s3StoreImg(
         newRecipe.backgroundImg,
         `${newRecipe.title + newRecipe.userId}.jpg`
@@ -362,22 +361,25 @@ recipeRouter.put(
         } as ApiResponse;
         return;
       }
+
       if (updatedRecipe.backgroundImg) {
-        if(currentRecipe.backgroundImg === updatedRecipe.backgroundImg) return;
-        const fileUrl = await s3StoreImg(
-          updatedRecipe.backgroundImg,
-          `${updatedRecipe.title + updatedRecipe.userId}.jpg`
-        );
-        if (!fileUrl) {
-          ctx.response.status = 500;
-          ctx.response.body = {
-            success: false,
-            message: ResponseTypes.IMAGE_UPLOAD_FAILED,
-          } as ApiResponse;
-          return;
+        if (currentRecipe.backgroundImg !== updatedRecipe.backgroundImg) {
+          const fileUrl = await s3StoreImg(
+            updatedRecipe.backgroundImg,
+            `${updatedRecipe.title + updatedRecipe.userId}.jpg`
+          );
+          if (!fileUrl) {
+            ctx.response.status = 500;
+            ctx.response.body = {
+              success: false,
+              message: ResponseTypes.IMAGE_UPLOAD_FAILED,
+            } as ApiResponse;
+            return;
+          }
+          updatedRecipe.backgroundImg = fileUrl;
         }
-        updatedRecipe.backgroundImg = fileUrl;
       }
+
       await recipeModel.updateOne({ _id: recipeId }, updatedRecipe);
       ctx.response.status = 200;
       ctx.response.body = {
