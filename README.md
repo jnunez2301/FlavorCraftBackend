@@ -1,5 +1,9 @@
 # FlavorCraftBackend
 Api documentation for [FlavorCraft](https://github.com/jnunez2301/FlavorCraft)
+## About Deno 1.45.3(19/10/2024)
+
+This app was made with `Deno 1.45.3` which for some reason has no compatibility with further versions due to mongodb child dependencies not working as intended in some use cases. If you cannot boot this app on your local machine please make sure to downgrade to **1.45** using `deno upgrade --version 1.45.3`.
+
 
 ## Enviroment
 
