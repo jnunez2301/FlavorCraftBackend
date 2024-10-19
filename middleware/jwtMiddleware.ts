@@ -28,9 +28,10 @@ async function jwtMiddleware(ctx: Context, next: () => Promise<unknown>) {
         await next();
       } catch (err) {
         ctx.response.status = Status.Forbidden;
+        console.error(err);
         ctx.response.body = {
           success: false,
-          message: err.message || ResponseTypes.INVALID_TOKEN,
+          message: "You must be logged in to see this page",
         } as ApiResponse;
         return;
       }

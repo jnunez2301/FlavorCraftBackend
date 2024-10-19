@@ -104,7 +104,8 @@ authRouter.get("/api/auth/profile", authMiddleware, async(ctx, next) => {
       session: minifyUser(currentUser),
     } as ApiResponse;
   } catch (error) {
-    apiError(ctx, error);
+    console.log(error, new Date());
+    apiError(ctx, "You must be logged in to see this page");
   }
   next();
 });
